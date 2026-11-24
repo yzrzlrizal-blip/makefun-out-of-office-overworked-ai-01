@@ -25,6 +25,9 @@ def main() -> int:
     if not text.strip():
         print("entry is only whitespace", file=sys.stderr)
         return 1
+    if "\n" in text or "\r" in text:
+        print("entry must be a single line", file=sys.stderr)
+        return 1
 
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
@@ -38,7 +41,7 @@ def main() -> int:
     if written != text.encode("utf-8"):
         print("verification failed: entry.txt differs from ENTRY", file=sys.stderr)
         return 1
-    print(f"wrote {path} ({len(written)} bytes)")
+    print(f"wrote {path} ({len(written)} bytes, {len(text)} chars)")
     return 0
 
 
